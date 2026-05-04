@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chronos-universal.dev/schemas/proposal.schema.json",
+  "title": "ChronosProposal",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "detected_pattern",
+    "evidence",
+    "needed_capabilities",
+    "agent_match",
+    "trigger",
+    "risk_class",
+    "confidence",
+    "score",
+    "approval_required",
+    "success_criteria",
+    "retirement_conditions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "detected_pattern": { "type": "string" },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["event_index", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "event_index": { "type": "integer", "minimum": 0 },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "needed_capabilities": { "type": "array", "items": { "type": "string" } },
+    "agent_match": {
+      "type": "object",
+      "required": ["status", "candidate_agents", "missing_capabilities"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["matched", "partial_match", "no_suitable_agent"] },
+        "selected_agent_id": { "type": ["string", "null"] },
+        "fit_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "candidate_agents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["agent_id", "fit_score", "matched_capabilities", "missing_capabilities"],
+            "additionalProperties": false,
+            "properties": {
+              "agent_id": { "type": "string" },
+              "fit_score": { "type": "number", "minimum": 0, "maximum": 1 },
+              "matched_capabilities": { "type": "array", "items": { "type": "string" } },
+              "missing_capabilities": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "missing_capabilities": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "required": ["type", "human_readable"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "enum": ["cron", "event", "threshold", "manual"] },
+        "expression": { "type": "string" },
+        "event": { "type": "string" },
+        "condition": { "type": "string" },
+        "human_readable": { "type": "string" }
+      }
+    },
+    "job_instruction": { "type": "string" },
+    "risk_class": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "estimated_value": { "type": "string" },
+    "false_positive_cost": { "type": "string" },
+    "approval_required": { "type": "boolean" },
+    "success_criteria": { "type": "array", "items": { "type": "string" } },
+    "retirement_conditions": { "type": "array", "items": { "type": "string" } }
+  }
+}
