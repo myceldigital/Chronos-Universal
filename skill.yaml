@@ -1,0 +1,48 @@
+name: chronos-universal
+version: 0.1.0
+description: Lean review-day skill that turns normalized daily history into ranked recurring-agent workflow proposals.
+mode: review_only
+
+inputs:
+  - daily_history_jsonl
+  - agent_capability_registry_json
+  - dismissals_jsonl_optional
+
+outputs:
+  - markdown_review
+  - json_plan
+
+permissions:
+  default: read_only
+  can_propose_triggers: true
+  can_install_triggers: false
+  can_trigger_agents: false
+  can_create_agents: false
+  can_make_network_calls: false
+  can_expand_permissions: false
+
+supported_trigger_types:
+  - cron
+  - event
+  - threshold
+  - manual
+
+risk_classes:
+  - L0
+  - L1
+  - L2
+  - L3
+  - L4
+  - L5
+
+safety:
+  human_approval_required_before_activation: true
+  external_action_allowed_by_default: false
+  regulated_action_allowed_by_default: false
+  destructive_action_allowed_by_default: false
+  permission_expansion_allowed: false
+
+related_skills:
+  review_day: implemented_here
+  apply_plan: separate_skill
+  propose_agent: separate_skill
