@@ -1,0 +1,88 @@
+{
+  "agents": [
+    {
+      "agent_id": "agent.task_orchestrator",
+      "display_name": "Task Orchestrator",
+      "description": "Extracts commitments and suggests tasks from daily activity.",
+      "capabilities": {
+        "read": ["email.threads", "calendar.events", "tasks.open"],
+        "reason": ["extract_commitments", "prioritize", "detect_staleness", "infer_next_actions"],
+        "write": ["create_task_suggestion"],
+        "act": []
+      },
+      "constraints": {
+        "max_risk_class": "L1",
+        "requires_approval_for": ["external_send", "deletion", "regulated_action"],
+        "forbidden_actions": ["send_email_without_approval", "delete_task"]
+      },
+      "cron_compatibility": {
+        "can_run_scheduled": true,
+        "preferred_frequencies": ["daily", "weekly"],
+        "max_runtime_seconds": 300
+      }
+    },
+    {
+      "agent_id": "agent.briefing_assistant",
+      "display_name": "Briefing Assistant",
+      "description": "Prepares contextual briefings before meetings.",
+      "capabilities": {
+        "read": ["calendar.events", "email.threads", "files.read"],
+        "reason": ["summarize", "summarize_context", "classify"],
+        "write": ["report"],
+        "act": []
+      },
+      "constraints": {
+        "max_risk_class": "L0",
+        "requires_approval_for": ["external_send", "regulated_action"],
+        "forbidden_actions": ["send_email_without_approval", "modify_calendar"]
+      },
+      "cron_compatibility": {
+        "can_run_scheduled": true,
+        "preferred_frequencies": ["daily", "event_triggered"],
+        "max_runtime_seconds": 240
+      }
+    },
+    {
+      "agent_id": "agent.mail_drafter",
+      "display_name": "Mail Drafter",
+      "description": "Finds follow-up needs and drafts messages for review.",
+      "capabilities": {
+        "read": ["email.threads", "calendar.events"],
+        "reason": ["detect_followups", "infer_next_actions", "summarize"],
+        "write": ["create_email_draft", "draft_message"],
+        "act": []
+      },
+      "constraints": {
+        "max_risk_class": "L1",
+        "requires_approval_for": ["external_send"],
+        "forbidden_actions": ["send_email_without_approval"]
+      },
+      "cron_compatibility": {
+        "can_run_scheduled": true,
+        "preferred_frequencies": ["daily"],
+        "max_runtime_seconds": 300
+      }
+    },
+    {
+      "agent_id": "agent.repo_doc_steward",
+      "display_name": "Repo Documentation Steward",
+      "description": "Checks repositories and docs for drift.",
+      "capabilities": {
+        "read": ["github.read", "files.read", "docs.read"],
+        "reason": ["compare_changes_to_docs", "doc_drift_detection"],
+        "write": ["suggest_doc_updates", "draft_doc_update"],
+        "act": []
+      },
+      "constraints": {
+        "max_risk_class": "L1",
+        "requires_approval_for": ["pull_request", "external_send"],
+        "forbidden_actions": ["merge_pr", "delete_branch"]
+      },
+      "cron_compatibility": {
+        "can_run_scheduled": true,
+        "preferred_frequencies": ["weekly"],
+        "max_runtime_seconds": 600
+      }
+    }
+  ]
+}
