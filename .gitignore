@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Chronos outputs
+.chronos-out/
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
