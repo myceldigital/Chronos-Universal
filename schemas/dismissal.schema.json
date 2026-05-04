@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chronos-universal.dev/schemas/dismissal.schema.json",
+  "title": "ChronosDismissal",
+  "type": "object",
+  "required": ["ts", "proposal_id", "decision"],
+  "additionalProperties": false,
+  "properties": {
+    "ts": { "type": "string" },
+    "proposal_id": { "type": "string" },
+    "decision": { "type": "string", "enum": ["dismissed", "ignored", "installed", "modified_then_installed"] },
+    "reason": { "type": "string" },
+    "pattern_key": { "type": "string" },
+    "agent_id": { "type": "string" }
+  }
+}
